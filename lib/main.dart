@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartcents/screens/get_started.dart';
 import 'package:smartcents/screens/home.dart';
+import 'package:flutter/services.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
   // Check if the user is opening the app for the first time
