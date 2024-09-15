@@ -15,7 +15,7 @@ class GetStarted extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      top: false,
+      // top: false,
       child: Scaffold(
         backgroundColor: AppColors.primaryColor,
         body: Center(
@@ -24,6 +24,7 @@ class GetStarted extends StatelessWidget {
             children: [
               const Spacer(),
               _buildImage(),
+              _buildSubtitle(),
               const Spacer(),
               _buildGetStartedButton(context),
               const Spacer(),
@@ -42,6 +43,11 @@ class GetStarted extends StatelessWidget {
       width: imageSize,
       fit: BoxFit.cover,
     );
+  }
+
+  Widget _buildSubtitle() {
+    return Text('"Where your financial literacy journey begins"',
+        style: GoogleFonts.workSans(color: Colors.white, fontSize: 14));
   }
 
   // Create a method for the Get Started button widget

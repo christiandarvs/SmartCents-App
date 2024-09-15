@@ -7,7 +7,7 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      top: false,
+      // top: false,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: AppColors.primaryColor,
