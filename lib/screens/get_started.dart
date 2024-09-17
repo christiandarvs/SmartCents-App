@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartcents/constants/colors.dart';
@@ -14,21 +15,33 @@ class GetStarted extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      // top: false,
-      child: Scaffold(
-        backgroundColor: AppColors.primaryColor,
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Spacer(),
-              _buildImage(),
-              _buildSubtitle(),
-              const Spacer(),
-              _buildGetStartedButton(context),
-              const Spacer(),
-            ],
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (bool didPop, Object? result) async {
+        if (didPop) {
+          return;
+        }
+        final bool shouldPop = await _showBackDialog(context) ?? false;
+        if (context.mounted && shouldPop) {
+          Navigator.pop(context);
+        }
+      },
+      child: SafeArea(
+        // top: false,
+        child: Scaffold(
+          backgroundColor: AppColors.primaryColor,
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Spacer(),
+                _buildImage(),
+                _buildSubtitle(),
+                const Spacer(),
+                _buildGetStartedButton(context),
+                const Spacer(),
+              ],
+            ),
           ),
         ),
       ),
@@ -85,4 +98,42 @@ class GetStarted extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<bool?> _showBackDialog(context) {
+  return showDialog<bool>(
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Exit'),
+        content: const Text(
+          'Are you sure you want to exit the application?',
+        ),
+        actions: <Widget>[
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: Theme.of(context).textTheme.labelLarge,
+            ),
+            child: const Text('Cancel'),
+            onPressed: () {
+              Navigator.pop(context, false);
+            },
+          ),
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: Theme.of(context).textTheme.labelLarge,
+            ),
+            child: const Text(
+              'Exit',
+              style: TextStyle(color: Colors.red),
+            ),
+            onPressed: () {
+              SystemNavigator.pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
 }
