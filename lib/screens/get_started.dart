@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartcents/constants/colors.dart';
 import 'package:smartcents/screens/home.dart';
+import 'package:smartcents/widgets/exit_dialog.dart';
 
 class GetStarted extends StatelessWidget {
   const GetStarted({super.key});
@@ -20,7 +20,7 @@ class GetStarted extends StatelessWidget {
       canPop: false,
       onPopInvokedWithResult: (bool didPop, Object? result) async {
         if (didPop) return;
-        final bool shouldPop = await _showBackDialog(context) ?? false;
+        final bool shouldPop = await showBackDialog(context) ?? false;
         if (context.mounted && shouldPop) {
           Navigator.pop(context);
         }
@@ -89,6 +89,10 @@ class GetStarted extends StatelessWidget {
             height: imageHeight, width: 350, fit: BoxFit.contain),
       ),
       decoration: PageDecoration(
+          bodyTextStyle: const TextStyle(
+              fontSize: 18, fontWeight: FontWeight.normal, color: Colors.white),
+          titleTextStyle: const TextStyle(
+              fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white),
           imagePadding: const EdgeInsets.only(top: 35),
           pageColor: AppColors.primaryColor,
           imageFlex: imageFlex ?? 1),
@@ -118,32 +122,5 @@ class GetStarted extends StatelessWidget {
         MaterialPageRoute(builder: (context) => const Home()),
       );
     }
-  }
-
-  Future<bool?> _showBackDialog(BuildContext context) {
-    return showDialog<bool>(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Exit'),
-          content: const Text('Are you sure you want to exit the application?'),
-          actions: <Widget>[
-            TextButton(
-              style: TextButton.styleFrom(
-                  textStyle: Theme.of(context).textTheme.labelLarge),
-              child: const Text('Cancel'),
-              onPressed: () => Navigator.pop(context, false),
-            ),
-            TextButton(
-              style: TextButton.styleFrom(
-                  textStyle: Theme.of(context).textTheme.labelLarge),
-              child: const Text('Exit', style: TextStyle(color: Colors.red)),
-              onPressed: () => SystemNavigator.pop(),
-            ),
-          ],
-        );
-      },
-    );
   }
 }

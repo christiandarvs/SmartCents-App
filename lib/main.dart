@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smartcents/blocs/budget_tracker/budget_tracker_bloc.dart';
+import 'package:smartcents/blocs/budget_tracker/budget_tracker_event.dart';
 import 'package:smartcents/screens/get_started.dart';
 import 'package:smartcents/screens/home.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,7 +35,12 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // Show GetStarted screen if it's the user's first time, otherwise show Home
-      home: isFirstTime ? const GetStarted() : const Home(),
+      home: isFirstTime
+          ? const GetStarted()
+          : BlocProvider(
+              create: (context) => BudgetTrackerBloc()..add(LoadBudgets()),
+              child: const Home(),
+            ),
     );
   }
 }

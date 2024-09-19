@@ -1,44 +1,94 @@
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+import 'package:smartcents/blocs/budget_tracker/budget_tracker_screen.dart';
 import 'package:smartcents/constants/colors.dart';
+import 'package:smartcents/screens/courses.dart';
+import 'package:smartcents/screens/dashboard.dart';
+import 'package:smartcents/widgets/exit_dialog.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      // top: false,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: AppColors.primaryColor,
-          iconTheme:
-              const IconThemeData(color: AppColors.buttonColor, size: 30),
-        ),
-        drawer: const Drawer(),
-        body: const Center(
-          child: Column(
-            children: [Text('Hello')],
-          ),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          selectedFontSize: 0,
-          backgroundColor: AppColors.primaryColor,
-          selectedIconTheme: const IconThemeData(color: Colors.white),
-          unselectedIconTheme: const IconThemeData(color: Color(0xffFFD500)),
-          items: const [
-            BottomNavigationBarItem(
-                icon: Icon(Icons.home), label: 'Home', tooltip: 'Home'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.book), label: 'Courses', tooltip: 'Courses'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.account_circle_outlined),
-                label: 'Profile',
-                tooltip: 'Profile'),
-          ],
-          currentIndex: 0,
-          onTap: (value) {},
-        ),
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (bool didPop, Object? result) async {
+        if (didPop) return;
+        final bool shouldPop = await showBackDialog(context) ?? false;
+        if (context.mounted && shouldPop) {
+          Navigator.pop(context);
+        }
+      },
+      child: SafeArea(
+        child: PersistentTabView(
+            backgroundColor: AppColors.primaryColor,
+            context,
+            screens: _buildScreens(),
+            items: _navBarsItems()),
       ),
     );
   }
+}
+
+List<Widget> _buildScreens() {
+  return [
+    const Dashboard(),
+    const BudgetTrackerScreen(),
+    Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColors.primaryColor,
+      ),
+      body: Container(
+        color: Colors.white,
+        width: 200,
+        height: 200,
+      ),
+    ),
+    Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColors.primaryColor,
+      ),
+      body: const Courses(),
+    ),
+    Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColors.primaryColor,
+      ),
+      body: Container(
+        color: Colors.white,
+        width: 200,
+        height: 200,
+      ),
+    ),
+  ];
+}
+
+List<PersistentBottomNavBarItem> _navBarsItems() {
+  return [
+    PersistentBottomNavBarItem(
+        title: 'Home',
+        icon: const Icon(Icons.home),
+        activeColorPrimary: AppColors.activeIconColor,
+        inactiveColorPrimary: AppColors.buttonColor),
+    PersistentBottomNavBarItem(
+        title: 'Budget',
+        icon: const Icon(Icons.track_changes_rounded),
+        activeColorPrimary: AppColors.activeIconColor,
+        inactiveColorPrimary: AppColors.buttonColor),
+    PersistentBottomNavBarItem(
+        icon: const Icon(Icons.add),
+        activeColorPrimary: AppColors.activeIconColor,
+        inactiveColorPrimary: AppColors.buttonColor),
+    PersistentBottomNavBarItem(
+        title: 'Courses',
+        icon: const Icon(Icons.library_books_rounded),
+        activeColorPrimary: AppColors.activeIconColor,
+        inactiveColorPrimary: AppColors.buttonColor),
+    PersistentBottomNavBarItem(
+        title: 'Settings',
+        icon: const Icon(Icons.more_horiz_sharp),
+        activeColorPrimary: AppColors.activeIconColor,
+        inactiveColorPrimary: AppColors.buttonColor),
+  ];
 }
