@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:introduction_screen/introduction_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartcents/constants/colors.dart';
 import 'package:smartcents/screens/home.dart';
@@ -8,7 +8,8 @@ import 'package:smartcents/screens/home.dart';
 class GetStarted extends StatelessWidget {
   const GetStarted({super.key});
 
-  static const double imageSize = 350.0;
+  static const double imageSize = 420;
+  static const double imageHeight = 460;
   static const double buttonWidth = 250.0;
   static const double buttonHeight = 50.0;
   static const double borderRadiusValue = 25.0;
@@ -18,122 +19,131 @@ class GetStarted extends StatelessWidget {
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (bool didPop, Object? result) async {
-        if (didPop) {
-          return;
-        }
+        if (didPop) return;
         final bool shouldPop = await _showBackDialog(context) ?? false;
         if (context.mounted && shouldPop) {
           Navigator.pop(context);
         }
       },
       child: SafeArea(
-        // top: false,
         child: Scaffold(
-          backgroundColor: AppColors.primaryColor,
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Spacer(),
-                _buildImage(),
-                _buildSubtitle(),
-                const Spacer(),
-                _buildGetStartedButton(context),
-                const Spacer(),
-              ],
-            ),
+          body: IntroductionScreen(
+            scrollPhysics: const BouncingScrollPhysics(),
+            pages: _buildPages(),
+            onDone: () => _onDone(context),
+            showSkipButton: true,
+            skip: const Text("Skip"),
+            next: const Icon(Icons.arrow_forward),
+            done: const Text("Done",
+                style: TextStyle(fontWeight: FontWeight.w600)),
+            dotsDecorator: _buildDotsDecorator(context),
           ),
         ),
       ),
     );
   }
 
-  // Create a method for the image widget
-  Widget _buildImage() {
-    return const Image(
-      image: AssetImage('./assets/get_started_coin.png'),
-      height: imageSize,
-      width: imageSize,
-      fit: BoxFit.cover,
+  List<PageViewModel> _buildPages() {
+    return [
+      _createPageViewModel(
+          title: '',
+          body: "",
+          imagePath: './assets/get_started_coin.png',
+          imageHeight: imageHeight,
+          imageWidth: imageSize,
+          imageFlex: 30),
+      _createPageViewModel(
+        title: "Your Path to Smart Money Habits",
+        body:
+            "Understand the basics of budgeting, saving, investing, and more with easy-to-follow lessons.",
+        imagePath: './assets/2nd-screen.png',
+      ),
+      _createPageViewModel(
+        title: "Achieve Your Financial Goals",
+        body:
+            "Track your progress as you work toward financial stability and success.",
+        imagePath: './assets/3rd-screen.png',
+      ),
+      _createPageViewModel(
+        title: "Empower Yourself with Financial Knowledge",
+        body:
+            "Master the essentials of money management with interactive tools and resources.",
+        imagePath: './assets/4th-screen.png',
+      ),
+    ];
+  }
+
+  PageViewModel _createPageViewModel({
+    required String title,
+    required String body,
+    required String imagePath,
+    double imageHeight = 350,
+    double imageWidth = double.infinity,
+    int? imageFlex,
+  }) {
+    return PageViewModel(
+      title: title,
+      body: body,
+      image: Center(
+        child: Image.asset(imagePath,
+            height: imageHeight, width: 350, fit: BoxFit.contain),
+      ),
+      decoration: PageDecoration(
+          imagePadding: const EdgeInsets.only(top: 35),
+          pageColor: AppColors.primaryColor,
+          imageFlex: imageFlex ?? 1),
     );
   }
 
-  Widget _buildSubtitle() {
-    return Text('"Where your financial literacy journey begins"',
-        style: GoogleFonts.workSans(color: Colors.white, fontSize: 14));
-  }
-
-  // Create a method for the Get Started button widget
-  Widget _buildGetStartedButton(context) {
-    return SizedBox(
-      width: buttonWidth,
-      height: buttonHeight,
-      child: ElevatedButton(
-        onPressed: () async {
-          // Mark the app as not first-time
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          await prefs.setBool('isFirstTime', false);
-
-          // Navigate to the Home screen
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const Home()),
-          );
-        },
-        style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            side: const BorderSide(color: Colors.black),
-            borderRadius: BorderRadius.circular(borderRadiusValue),
-          ),
-          backgroundColor: AppColors.buttonColor,
-        ),
-        child: Text(
-          'Get Started',
-          style: GoogleFonts.workSans(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+  DotsDecorator _buildDotsDecorator(BuildContext context) {
+    return DotsDecorator(
+      size: const Size.square(10.0),
+      activeSize: const Size(22.0, 10.0),
+      activeColor: Theme.of(context).primaryColor,
+      color: Colors.black26,
+      spacing: const EdgeInsets.symmetric(horizontal: 3.0),
+      activeShape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(borderRadiusValue),
       ),
     );
   }
-}
 
-Future<bool?> _showBackDialog(context) {
-  return showDialog<bool>(
-    barrierDismissible: false,
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('Exit'),
-        content: const Text(
-          'Are you sure you want to exit the application?',
-        ),
-        actions: <Widget>[
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: Theme.of(context).textTheme.labelLarge,
-            ),
-            child: const Text('Cancel'),
-            onPressed: () {
-              Navigator.pop(context, false);
-            },
-          ),
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: Theme.of(context).textTheme.labelLarge,
-            ),
-            child: const Text(
-              'Exit',
-              style: TextStyle(color: Colors.red),
-            ),
-            onPressed: () {
-              SystemNavigator.pop();
-            },
-          ),
-        ],
+  Future<void> _onDone(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isFirstTime', false);
+
+    if (context.mounted) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const Home()),
       );
-    },
-  );
+    }
+  }
+
+  Future<bool?> _showBackDialog(BuildContext context) {
+    return showDialog<bool>(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Exit'),
+          content: const Text('Are you sure you want to exit the application?'),
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(
+                  textStyle: Theme.of(context).textTheme.labelLarge),
+              child: const Text('Cancel'),
+              onPressed: () => Navigator.pop(context, false),
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                  textStyle: Theme.of(context).textTheme.labelLarge),
+              child: const Text('Exit', style: TextStyle(color: Colors.red)),
+              onPressed: () => SystemNavigator.pop(),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
