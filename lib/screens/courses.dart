@@ -1,32 +1,134 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:smartcents/constants/colors.dart';
 
 class Courses extends StatelessWidget {
   const Courses({super.key});
 
   @override
   Widget build(BuildContext context) {
-    List<String> titles = [
-      'Savings',
-      'Investments',
-      'Budget',
-      'Credit Cards',
-      'Financial Goals',
-      'Resources'
+    final titles = [
+      'Financial Planning',
+      'Budget and Savings',
+      'Frugal Living',
+      'Investment Basics',
+      'Debt Management',
+      'Understanding Taxes',
+      'Financial Scams',
+      'Learn More'
     ];
-    List<String> imagesLink = [
-      'https://g.foolcdn.com/editorial/images/541946/jar-full-of-hundred-dollar-bills-money-savings.jpg',
-      'https://www.livemint.com/lm-img/img/2023/08/08/1600x900/-iStockphoto-_1691514418144.jpg',
-      'https://takecaregarden.com/wp-content/uploads/2024/08/67162601.jpg',
-      'https://ringgitplus.com/en/blog/wp-content/uploads/2020/03/credit-cards.jpg',
-      'https://blog.jeton.com/wp-content/uploads/2020/10/financial_goals.png',
-      'https://insidesources.com/wp-content/uploads/2014/06/bigstock-A-pile-of-books-with-library-o-54563726.jpg',
+
+    final images = [
+      './assets/Financial_Planning.png',
+      './assets/Budget_and_Savings.png',
+      './assets/Frugal_Living.png',
+      './assets/Basic_Investing.png',
+      './assets/Debt_Management.png',
+      './assets/Understanding_Taxes.png',
+      './assets/Financial_Scams.png',
+      './assets/Financial_Planning.png',
     ];
+
     return SafeArea(
-        child: Scaffold(
-      body: Center(
-        child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              // crossAxisCount: ResponsiveValue<int>(
+      child: Scaffold(
+        appBar: AppBar(
+          shadowColor: Colors.black,
+          backgroundColor: AppColors.primaryColor,
+          title: const Text('Courses'),
+        ),
+        body: Center(
+          child: GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: _getCrossAxisCount(context),
+              childAspectRatio: 0.75,
+            ),
+            itemCount: titles.length,
+            itemBuilder: (ctx, index) =>
+                _buildCourseCard(ctx, titles[index], images[index]),
+          ),
+        ),
+      ),
+    );
+  }
+
+  int _getCrossAxisCount(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    if (width < 600) {
+      return 2; // Two columns for small devices
+    } else if (width < 900) {
+      return 3; // Three columns for medium devices
+    } else {
+      return 4; // Four columns for large devices
+    }
+  }
+
+  Widget _buildCourseCard(BuildContext context, String title, String image) {
+    return InkWell(
+      onTap: () {
+        // Add your onTap functionality here if needed
+      },
+      child: Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+          side: const BorderSide(color: Colors.black),
+        ),
+        margin: const EdgeInsets.all(7),
+        child: Column(
+          children: [
+            ClipRRect(
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(8)),
+              child: Image.asset(
+                image,
+                height: _getImageHeight(context),
+                fit: BoxFit.cover,
+                width: double.infinity,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(5),
+              child: AutoSizeText(
+                title,
+                softWrap: true,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  double _getImageHeight(BuildContext context) {
+    // Adjust the height based on device width
+    double width = MediaQuery.of(context).size.width;
+    if (width < 600) {
+      return 150; // Smaller height for small devices
+    } else if (width < 900) {
+      return 200; // Medium height for medium devices
+    } else {
+      return 250; // Larger height for large devices
+    }
+  }
+}
+
+
+
+// onTap: () => Navigator.push(
+//   context,
+//   MaterialPageRoute(
+//     builder: (context) => SecondPage(
+//       pageName: titles[index],
+//       // textToSpeechEnabled: widget.textToSpeechEnabled,
+//     ),
+//   ),
+// ),
+            // crossAxisCount: ResponsiveValue<int>(
               //     defaultValue: 2,
               //     context,
               //     conditionalValues: [
@@ -34,56 +136,3 @@ class Courses extends StatelessWidget {
               //       const Condition.largerThan(
               //           name: TABLET, value: 4, breakpoint: 800),
               //     ]).value,
-              crossAxisCount: 2,
-              childAspectRatio: 0.7),
-          itemBuilder: (BuildContext ctx, index) {
-            return InkWell(
-              // onTap: () => Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => SecondPage(
-              //       pageName: titles[index],
-              //       // textToSpeechEnabled: widget.textToSpeechEnabled,
-              //     ),
-              //   ),
-              // ),
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Theme.of(context).brightness == Brightness.dark
-                      ? Border.all(color: Colors.white)
-                      : Border.all(color: Colors.black),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                margin: const EdgeInsets.all(7),
-                child: Column(
-                  children: [
-                    ClipRect(
-                      child: Image(
-                        //make it responsive
-                        image: NetworkImage(imagesLink[index]),
-                        width: MediaQuery.of(context).size.width / 2 - 20,
-                        height: 200,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    // Container(
-                    //   margin: const EdgeInsets.all(5),
-                    //   child: AutoSizeText(
-                    //     softWrap: true,
-                    //     titles[index],
-                    //     style: GoogleFonts.poppins(
-                    //         fontWeight: FontWeight.bold, fontSize: 15),
-                    //   ),
-                    // ),
-                    // const AutoSizeText('sdasa')
-                  ],
-                ),
-              ),
-            );
-          },
-          itemCount: titles.length,
-        ),
-      ),
-    ));
-  }
-}

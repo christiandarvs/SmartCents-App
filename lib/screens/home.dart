@@ -22,6 +22,7 @@ class Home extends StatelessWidget {
       },
       child: SafeArea(
         child: PersistentTabView(
+            handleAndroidBackButtonPress: false,
             backgroundColor: AppColors.primaryColor,
             context,
             screens: _buildScreens(),
@@ -45,12 +46,7 @@ List<Widget> _buildScreens() {
         height: 200,
       ),
     ),
-    Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.primaryColor,
-      ),
-      body: const Courses(),
-    ),
+    const Courses(),
     Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
