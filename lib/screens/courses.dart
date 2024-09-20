@@ -34,7 +34,10 @@ class Courses extends StatelessWidget {
         appBar: AppBar(
           shadowColor: Colors.black,
           backgroundColor: AppColors.primaryColor,
-          title: const Text('Courses'),
+          title: const Text(
+            'Courses',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
         ),
         body: Center(
           child: GridView.builder(
