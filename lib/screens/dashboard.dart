@@ -12,22 +12,22 @@ class Dashboard extends StatelessWidget {
       'Financial Planning',
       'Budget and Savings',
       'Frugal Living',
-      'Investment Basics',
-      'Debt Management',
-      'Understanding Taxes',
-      'Financial Scams',
-      'Learn More'
+      // 'Investment Basics',
+      // 'Debt Management',
+      // 'Understanding Taxes',
+      // 'Financial Scams',
+      // 'Learn More'
     ];
 
     final images = [
       './assets/Financial_Planning.png',
       './assets/Budget_and_Savings.png',
       './assets/Frugal_Living.png',
-      './assets/Basic_Investing.png',
-      './assets/Debt_Management.png',
-      './assets/Understanding_Taxes.png',
-      './assets/Financial_Scams.png',
-      './assets/Financial_Planning.png'
+      // './assets/Basic_Investing.png',
+      // './assets/Debt_Management.png',
+      // './assets/Understanding_Taxes.png',
+      // './assets/Financial_Scams.png',
+      // './assets/Financial_Planning.png'
     ];
 
     return SafeArea(
