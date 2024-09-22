@@ -1,6 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:smartcents/constants/colors.dart';
+import 'package:smartcents/screens/financial_planning.dart';
 
 class Courses extends StatelessWidget {
   const Courses({super.key});
@@ -68,7 +70,12 @@ class Courses extends StatelessWidget {
   Widget _buildCourseCard(BuildContext context, String title, String image) {
     return InkWell(
       onTap: () {
-        // Add your onTap functionality here if needed
+        PersistentNavBarNavigator.pushNewScreen(
+          pageTransitionAnimation: PageTransitionAnimation.fade,
+          context,
+          screen: const FinancialPlanning(),
+          withNavBar: false, // This hides the bottom nav bar
+        );
       },
       child: Card(
         elevation: 4,

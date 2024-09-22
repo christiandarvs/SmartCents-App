@@ -1,26 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
-import 'package:smartcents/blocs/budget_tracker/budget_tracker_screen.dart';
 import 'package:smartcents/constants/colors.dart';
+import 'package:smartcents/screens/budget_screen.dart';
 import 'package:smartcents/screens/courses.dart';
 import 'package:smartcents/screens/dashboard.dart';
 import 'package:smartcents/widgets/exit_dialog.dart';
 
-class Home extends StatefulWidget {
+class Home extends StatelessWidget {
   const Home({super.key});
-
-  @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  // @override
-  final PersistentTabController _controller =
-      PersistentTabController(initialIndex: 0);
-
-  void navigateToCoursesTab() {
-    _controller.jumpToTab(3); // Jump to the "Courses" tab (index 3)
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +23,6 @@ class _HomeState extends State<Home> {
       child: SafeArea(
         child: PersistentTabView(
           context,
-          controller: _controller,
           handleAndroidBackButtonPress: false,
           backgroundColor: AppColors.primaryColor,
           screens: _buildScreens(),
@@ -48,10 +34,8 @@ class _HomeState extends State<Home> {
 
   List<Widget> _buildScreens() {
     return [
-      Dashboard(
-        onViewMorePressed: navigateToCoursesTab,
-      ),
-      const BudgetTrackerScreen(),
+      const Dashboard(),
+      const BudgetScreen(),
       Scaffold(
         appBar: AppBar(
           backgroundColor: AppColors.primaryColor,

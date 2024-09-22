@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smartcents/constants/colors.dart';
 
 class Dashboard extends StatelessWidget {
-  final VoidCallback onViewMorePressed;
-
-  const Dashboard({super.key, required this.onViewMorePressed});
+  const Dashboard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +31,10 @@ class Dashboard extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          title: const Text(
+            'Dashboard',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
           backgroundColor: AppColors.primaryColor,
         ),
         body: Column(
@@ -40,19 +42,10 @@ class Dashboard extends StatelessWidget {
             Container(
               width: double.infinity,
               color: Colors.blue,
-              height: 420,
+              height: 460,
             ),
-            Container(
-              margin: const EdgeInsets.only(right: 10, bottom: 5),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(
-                    onPressed: onViewMorePressed, // Navigates to "Courses"
-                    child: const Text('View More'),
-                  ),
-                ],
-              ),
+            const SizedBox(
+              height: 15,
             ),
             Expanded(
               child: ListView.builder(
