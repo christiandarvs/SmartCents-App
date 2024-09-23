@@ -2,7 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:smartcents/constants/colors.dart';
-import 'package:smartcents/screens/financial_planning.dart';
+import 'package:smartcents/widgets/module.dart';
 
 class Courses extends StatelessWidget {
   const Courses({super.key});
@@ -31,6 +31,41 @@ class Courses extends StatelessWidget {
       './assets/Financial_Planning.png',
     ];
 
+    final modules = [
+      const Module(
+          title: 'Financial Planning',
+          summary: 'Financial Planning is important :)',
+          fileName: 'Reviewer.pdf'),
+      const Module(
+          title: 'Financial Planning',
+          summary: 'Financial Planning is important :)',
+          fileName: 'Reviewer.pdf'),
+      const Module(
+          title: 'Financial Planning',
+          summary: 'Financial Planning is important :)',
+          fileName: 'Reviewer.pdf'),
+      const Module(
+          title: 'Financial Planning',
+          summary: 'Financial Planning is important :)',
+          fileName: 'Reviewer.pdf'),
+      const Module(
+          title: 'Financial Planning',
+          summary: 'Financial Planning is important :)',
+          fileName: 'Reviewer.pdf'),
+      const Module(
+          title: 'Financial Planning',
+          summary: 'Financial Planning is important :)',
+          fileName: 'Reviewer.pdf'),
+      const Module(
+          title: 'Financial Planning',
+          summary: 'Financial Planning is important :)',
+          fileName: 'Reviewer.pdf'),
+      const Module(
+          title: 'Financial Planning',
+          summary: 'Financial Planning is important :)',
+          fileName: 'Reviewer.pdf'),
+    ];
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -48,8 +83,8 @@ class Courses extends StatelessWidget {
               childAspectRatio: 0.75,
             ),
             itemCount: titles.length,
-            itemBuilder: (ctx, index) =>
-                _buildCourseCard(ctx, titles[index], images[index]),
+            itemBuilder: (ctx, index) => _buildCourseCard(
+                ctx, titles[index], images[index], modules[index]),
           ),
         ),
       ),
@@ -67,13 +102,14 @@ class Courses extends StatelessWidget {
     }
   }
 
-  Widget _buildCourseCard(BuildContext context, String title, String image) {
+  Widget _buildCourseCard(
+      BuildContext context, String title, String image, Widget module) {
     return InkWell(
       onTap: () {
         PersistentNavBarNavigator.pushNewScreen(
           pageTransitionAnimation: PageTransitionAnimation.fade,
           context,
-          screen: const FinancialPlanning(),
+          screen: module,
           withNavBar: false, // This hides the bottom nav bar
         );
       },
@@ -126,23 +162,3 @@ class Courses extends StatelessWidget {
     }
   }
 }
-
-
-
-// onTap: () => Navigator.push(
-//   context,
-//   MaterialPageRoute(
-//     builder: (context) => SecondPage(
-//       pageName: titles[index],
-//       // textToSpeechEnabled: widget.textToSpeechEnabled,
-//     ),
-//   ),
-// ),
-            // crossAxisCount: ResponsiveValue<int>(
-              //     defaultValue: 2,
-              //     context,
-              //     conditionalValues: [
-              //       const Condition.equals(name: TABLET, value: 3),
-              //       const Condition.largerThan(
-              //           name: TABLET, value: 4, breakpoint: 800),
-              //     ]).value,

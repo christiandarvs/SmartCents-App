@@ -4,14 +4,24 @@ import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:smartcents/constants/colors.dart';
 
-class FinancialPlanning extends StatelessWidget {
-  const FinancialPlanning({super.key});
+class Module extends StatelessWidget {
+  final String title;
+  final String summary;
+  final String fileName;
+
+  const Module({
+    super.key,
+    required this.title,
+    required this.summary,
+    required this.fileName,
+  });
+
   Future<void> downloadPdf(BuildContext context) async {
     if (Platform.isAndroid) {
       final permissionStatus = await Permission.manageExternalStorage.request();
       if (permissionStatus.isGranted) {
         try {
-          final ByteData byteData = await rootBundle.load('assets/DARVIN.pdf');
+          final ByteData byteData = await rootBundle.load('assets/$fileName');
           final Directory downloadDir =
               Directory('/storage/emulated/0/Download');
 
@@ -19,7 +29,7 @@ class FinancialPlanning extends StatelessWidget {
             await downloadDir.create(recursive: true);
           }
 
-          final String filePath = '${downloadDir.path}/sample.pdf';
+          final String filePath = '${downloadDir.path}/$fileName';
           final File file = File(filePath);
           await file.writeAsBytes(byteData.buffer.asUint8List());
 
@@ -61,15 +71,24 @@ class FinancialPlanning extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text(
-            'Financial Planning',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          title: Text(
+            title,
+            style: const TextStyle(
+                color: Colors.white, fontWeight: FontWeight.bold),
           ),
           backgroundColor: AppColors.primaryColor,
         ),
-        body: const Center(
+        body: Center(
           child: Column(
-            children: [Text('Financial Planning is important :)')],
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                summary,
+                style:
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
         ),
         floatingActionButton: FloatingActionButton(

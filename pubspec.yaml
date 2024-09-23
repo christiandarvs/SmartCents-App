@@ -30,11 +30,13 @@ environment:
 dependencies:
   auto_size_text: ^3.0.0
   cupertino_icons: ^1.0.8
+  device_info_plus: ^10.1.2
   equatable: ^2.0.5
   flutter:
     sdk: flutter
   google_fonts: ^6.2.1
   introduction_screen: ^3.1.14
+  permission_handler: ^11.3.1
   persistent_bottom_nav_bar: ^6.2.1
   provider: ^6.1.2
   shared_preferences: ^2.3.2
@@ -55,7 +57,7 @@ flutter:
   uses-material-design: true
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/
+      - assets/
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
