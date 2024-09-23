@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+import 'package:provider/provider.dart';
 import 'package:smartcents/constants/colors.dart';
+import 'package:smartcents/providers/survey_provider.dart';
 import 'package:smartcents/screens/budget_screen.dart';
 import 'package:smartcents/screens/courses.dart';
+// import 'package:smartcents/screens/courses.dart';
 import 'package:smartcents/screens/dashboard.dart';
+import 'package:smartcents/screens/survey.dart';
 import 'package:smartcents/widgets/exit_dialog.dart';
 
 class Home extends StatelessWidget {
@@ -25,14 +29,16 @@ class Home extends StatelessWidget {
           context,
           handleAndroidBackButtonPress: false,
           backgroundColor: AppColors.primaryColor,
-          screens: _buildScreens(),
+          screens: _buildScreens(context),
           items: _navBarsItems(),
         ),
       ),
     );
   }
 
-  List<Widget> _buildScreens() {
+  List<Widget> _buildScreens(BuildContext context) {
+    final hasCompletedSurvey =
+        context.watch<SurveyProvider>().hasCompletedSurvey;
     return [
       const Dashboard(),
       const BudgetScreen(),
@@ -46,7 +52,9 @@ class Home extends StatelessWidget {
           height: 200,
         ),
       ),
-      const Courses(),
+      hasCompletedSurvey
+          ? const Courses()
+          : SurveyScreen(), // Conditional screen
       Scaffold(
         appBar: AppBar(
           backgroundColor: AppColors.primaryColor,

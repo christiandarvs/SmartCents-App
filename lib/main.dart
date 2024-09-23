@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartcents/providers/budget_provider.dart';
 import 'package:smartcents/providers/permission_provider.dart';
+import 'package:smartcents/providers/survey_provider.dart';
 import 'package:smartcents/screens/get_started.dart';
 import 'package:smartcents/screens/home.dart';
 import 'package:flutter/services.dart';
@@ -29,7 +30,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => BudgetProvider()),
-        ChangeNotifierProvider(create: (context) => PermissionProvider())
+        ChangeNotifierProvider(create: (context) => PermissionProvider()),
+        ChangeNotifierProvider(create: (context) => SurveyProvider())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

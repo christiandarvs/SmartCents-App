@@ -37,31 +37,31 @@ class Courses extends StatelessWidget {
           summary: 'Financial Planning is important :)',
           fileName: 'Reviewer.pdf'),
       const Module(
-          title: 'Financial Planning',
+          title: 'Budget and Savigns',
           summary: 'Financial Planning is important :)',
           fileName: 'Reviewer.pdf'),
       const Module(
-          title: 'Financial Planning',
+          title: 'Frugal Living',
           summary: 'Financial Planning is important :)',
           fileName: 'Reviewer.pdf'),
       const Module(
-          title: 'Financial Planning',
+          title: 'Investment Basics',
           summary: 'Financial Planning is important :)',
           fileName: 'Reviewer.pdf'),
       const Module(
-          title: 'Financial Planning',
+          title: 'Debt Management',
           summary: 'Financial Planning is important :)',
           fileName: 'Reviewer.pdf'),
       const Module(
-          title: 'Financial Planning',
+          title: 'Understanding Taxes',
           summary: 'Financial Planning is important :)',
           fileName: 'Reviewer.pdf'),
       const Module(
-          title: 'Financial Planning',
+          title: 'Financial Scams',
           summary: 'Financial Planning is important :)',
           fileName: 'Reviewer.pdf'),
       const Module(
-          title: 'Financial Planning',
+          title: 'Learn More',
           summary: 'Financial Planning is important :)',
           fileName: 'Reviewer.pdf'),
     ];
@@ -69,6 +69,7 @@ class Courses extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           shadowColor: Colors.black,
           backgroundColor: AppColors.primaryColor,
           title: const Text(
