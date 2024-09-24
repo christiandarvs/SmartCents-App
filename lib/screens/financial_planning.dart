@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:smartcents/constants/colors.dart';
 
 class FinancialPlanning extends StatelessWidget {
   const FinancialPlanning({super.key});
@@ -63,9 +62,7 @@ class FinancialPlanning extends StatelessWidget {
           centerTitle: true,
           title: const Text(
             'Financial Planning',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
-          backgroundColor: AppColors.primaryColor,
         ),
         body: const Center(
           child: Column(

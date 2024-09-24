@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smartcents/constants/colors.dart';
 import 'package:smartcents/providers/budget_provider.dart';
 import 'package:smartcents/providers/permission_provider.dart';
 import 'package:smartcents/providers/survey_provider.dart';
@@ -39,6 +41,13 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
+          appBarTheme: AppBarTheme(
+            iconTheme: const IconThemeData(color: Colors.white),
+            shadowColor: Colors.black,
+            backgroundColor: AppColors.primaryColor,
+            titleTextStyle: GoogleFonts.poppins(
+                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
+          ),
         ),
         home: isFirstTime ? const GetStarted() : const Home(),
       ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:smartcents/constants/colors.dart';
 import '../providers/budget_provider.dart';
 
 class BudgetScreen extends StatefulWidget {
@@ -31,9 +30,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
       appBar: AppBar(
         title: const Text(
           'Budget Tracker',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: AppColors.primaryColor,
       ),
       body: Column(
         children: [

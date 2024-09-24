@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartcents/constants/colors.dart';
@@ -89,9 +90,9 @@ class GetStarted extends StatelessWidget {
             height: imageHeight, width: 350, fit: BoxFit.contain),
       ),
       decoration: PageDecoration(
-          bodyTextStyle: const TextStyle(
+          bodyTextStyle: GoogleFonts.manrope(
               fontSize: 18, fontWeight: FontWeight.normal, color: Colors.white),
-          titleTextStyle: const TextStyle(
+          titleTextStyle: GoogleFonts.poppins(
               fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white),
           imagePadding: const EdgeInsets.only(top: 35),
           pageColor: AppColors.primaryColor,

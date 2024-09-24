@@ -5,7 +5,6 @@ import 'package:smartcents/constants/colors.dart';
 import 'package:smartcents/providers/survey_provider.dart';
 import 'package:smartcents/screens/budget_screen.dart';
 import 'package:smartcents/screens/courses.dart';
-// import 'package:smartcents/screens/courses.dart';
 import 'package:smartcents/screens/dashboard.dart';
 import 'package:smartcents/screens/survey.dart';
 import 'package:smartcents/widgets/exit_dialog.dart';

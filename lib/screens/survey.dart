@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:smartcents/constants/colors.dart';
 import 'package:smartcents/providers/survey_provider.dart';
 import 'package:smartcents/screens/courses.dart';
 
@@ -45,27 +44,33 @@ class SurveyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.primaryColor,
-        title: const Text(
-          'Recommendation Survey',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-        ),
+        title: const Text('Recommendation Survey'),
       ),
       body: ListView.builder(
+        physics:
+            const AlwaysScrollableScrollPhysics(), // Use default physics for consistent scrolling behavior
         itemCount: _questions.length,
         itemBuilder: (context, index) {
           return Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  _questions[index],
-                  style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold),
+            padding:
+                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+            child: Card(
+              elevation: 2,
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _questions[index],
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 8),
+                    RatingOptions(index: index),
+                  ],
                 ),
-                RatingOptions(index: index),
-              ],
+              ),
             ),
           );
         },

@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:smartcents/constants/colors.dart';
 
 class Module extends StatelessWidget {
   final String title;
@@ -73,10 +72,7 @@ class Module extends StatelessWidget {
           centerTitle: true,
           title: Text(
             title,
-            style: const TextStyle(
-                color: Colors.white, fontWeight: FontWeight.bold),
           ),
-          backgroundColor: AppColors.primaryColor,
         ),
         body: Center(
           child: Column(
