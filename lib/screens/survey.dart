@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:smartcents/providers/survey_provider.dart';
 import 'package:smartcents/screens/courses.dart';
 
 class SurveyScreen extends StatelessWidget {
   final List<String> _questions = [
-    'I know what is Financial Planning.',
-    'I set financial goals and objectives in my life.',
-    'How likely are you to recommend us to a friend?',
-    'How easy was it to use our app?',
-    'How satisfied are you with our pricing?',
-    'How would you rate our overall experience?',
+    'Financial Planning',
+    'Budget & Savings',
+    'Frugal Living',
+    'Understanding Taxes',
+    'Investment Basics',
+    'Debt Management',
   ];
 
   SurveyScreen({super.key});
@@ -22,15 +23,34 @@ class SurveyScreen extends StatelessWidget {
         .every((answer) => answer != 0);
   }
 
-  void _submitSurvey(BuildContext context) {
+  void _submitSurvey(BuildContext context) async {
     if (_areAllQuestionsAnswered(context)) {
       final surveyAnswers =
           context.read<SurveyProvider>().getAnswers(); // Get answers
       debugPrint('Survey answers: $surveyAnswers'); // Print the answers
-      context.read<SurveyProvider>().completeSurvey();
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const Courses()),
+
+      // Predict a course using the survey answers
+      final predictedCourse =
+          await context.read<SurveyProvider>().predictAndStoreCourse();
+      debugPrint('Predicted Course: $predictedCourse'); // Print the prediction
+
+      // Show prediction in a dialog
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Recommended Course'),
+          content: Text(predictedCourse
+              .join(', ')), // Ensure predictedCourse is a List<String>
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                context.read<SurveyProvider>().completeSurvey();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -47,8 +67,6 @@ class SurveyScreen extends StatelessWidget {
         title: const Text('Recommendation Survey'),
       ),
       body: ListView.builder(
-        physics:
-            const AlwaysScrollableScrollPhysics(), // Use default physics for consistent scrolling behavior
         itemCount: _questions.length,
         itemBuilder: (context, index) {
           return Padding(

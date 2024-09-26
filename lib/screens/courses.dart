@@ -2,6 +2,8 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+import 'package:provider/provider.dart';
+import 'package:smartcents/providers/survey_provider.dart';
 import 'package:smartcents/widgets/module.dart';
 
 class Courses extends StatelessWidget {
@@ -11,24 +13,24 @@ class Courses extends StatelessWidget {
   Widget build(BuildContext context) {
     final titles = [
       'Financial Planning',
-      'Budget and Savings',
+      'Budget & Savings',
       'Frugal Living',
-      'Investment Basics',
-      'Debt Management',
       'Understanding Taxes',
+      'Debt Management',
+      'Investment Basics',
       'Financial Scams',
       'Learn More'
     ];
 
     final images = [
-      './assets/Financial_Planning.png',
-      './assets/Budget_and_Savings.png',
-      './assets/Frugal_Living.png',
-      './assets/Basic_Investing.png',
-      './assets/Debt_Management.png',
-      './assets/Understanding_Taxes.png',
+      './assets/Financial Planning.png',
+      './assets/Budget & Savings.png',
+      './assets/Frugal Living.png',
+      './assets/Understanding Taxes.png',
+      './assets/Debt Management.png',
+      './assets/Investment Basics.png',
       './assets/Financial_Scams.png',
-      './assets/Financial_Planning.png',
+      './assets/Financial Planning.png',
     ];
 
     final modules = [
@@ -67,6 +69,8 @@ class Courses extends StatelessWidget {
           fileName: 'Reviewer.pdf'),
     ];
 
+    final surveyProvider = Provider.of<SurveyProvider>(context);
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -81,34 +85,89 @@ class Courses extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    'Recommended Course',
-                    style: GoogleFonts.poppins(
-                        fontWeight: FontWeight.bold, fontSize: 18),
-                  ),
-                ),
-              ),
-              _buildCourseCard(context, titles[0], images[0], modules[0], true),
-              const SizedBox(height: 15),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Available Courses',
+                    'Recommended Courses',
                     style: GoogleFonts.poppins(
                         fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                 ),
               ),
               Expanded(
-                child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: _getCrossAxisCount(context),
-                    childAspectRatio: 0.65,
-                  ),
-                  itemCount: titles.length,
-                  itemBuilder: (ctx, index) => _buildCourseCard(
-                      ctx, titles[index], images[index], modules[index], false),
+                child: FutureBuilder<List<String>>(
+                  future: surveyProvider
+                      .predictAndStoreCourse(), // Fetch the recommended courses
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                          child:
+                              CircularProgressIndicator()); // Show loading spinner
+                    } else if (snapshot.hasError) {
+                      return Text(
+                          'Error: ${snapshot.error}'); // Show error message
+                    } else if (snapshot.hasData) {
+                      List<String> recommendedCourses = snapshot.data ?? [];
+
+                      // Display the list of recommended courses
+                      return ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: recommendedCourses.length,
+                        itemBuilder: (context, index) {
+                          String recommendedTitle =
+                              recommendedCourses[index].trim();
+
+                          // Find the index of the recommended title in the titles list (case insensitive)
+                          int titleIndex = titles.indexWhere(
+                            (title) =>
+                                title.trim().toLowerCase() ==
+                                recommendedTitle.toLowerCase(),
+                          );
+
+                          if (titleIndex != -1) {
+                            return _buildRecommendedCourseCard(
+                              context,
+                              titles[titleIndex],
+                              images[titleIndex],
+                              modules[titleIndex],
+                              recommendedCourses,
+                            );
+                          } else {
+                            return const SizedBox
+                                .shrink(); // Return an empty widget if not found
+                          }
+                        },
+                      );
+                    }
+                    return const SizedBox.shrink(); // Fallback empty widget
+                  },
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: Column(
+                  children: [
+                    const SizedBox(height: 15),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Available Courses',
+                          style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.bold, fontSize: 18),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: _getCrossAxisCount(context),
+                          childAspectRatio: 0.65,
+                        ),
+                        itemCount: titles.length,
+                        itemBuilder: (ctx, index) => _buildCourseCard(
+                            ctx, titles[index], images[index], modules[index]),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -130,7 +189,6 @@ class Courses extends StatelessWidget {
     String title,
     String image,
     Widget module,
-    bool isHorizontal,
   ) {
     return Card(
       elevation: 4,
@@ -139,111 +197,100 @@ class Courses extends StatelessWidget {
         side: const BorderSide(color: Colors.black),
       ),
       margin: const EdgeInsets.all(7),
-      child: isHorizontal
-          ? Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                ClipRRect(
-                  borderRadius:
-                      const BorderRadius.horizontal(left: Radius.circular(8)),
-                  child: Image.asset(
-                    image,
-                    height: _getImageHeight(context),
-                    width: MediaQuery.of(context).size.width *
-                        0.45, // Responsive width
-                    fit: BoxFit.cover,
+      child: Stack(
+        children: [
+          Column(
+            children: [
+              ClipRRect(
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(8)),
+                child: Image.asset(
+                  image,
+                  height: _getImageHeight(context),
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(5),
+                child: AutoSizeText(
+                  title,
+                  softWrap: true,
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
                   ),
+                  textAlign: TextAlign.center,
                 ),
-                Expanded(
-                  flex: 2,
-                  child: Padding(
-                    padding: EdgeInsets.all(MediaQuery.of(context).size.width *
-                        0.05), // Responsive padding
-                    child: AutoSizeText(
-                      title,
-                      softWrap: true,
-                      style: GoogleFonts.poppins(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15, // Responsive font size
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                        right: MediaQuery.of(context).size.width *
-                            0.02), // Responsive padding
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.play_circle_fill,
-                        color: Colors.black54,
-                        size: _getIconSize(
-                            context), // Keep this as is for responsiveness
-                      ),
-                      onPressed: () {
-                        PersistentNavBarNavigator.pushNewScreen(
-                          pageTransitionAnimation: PageTransitionAnimation.fade,
-                          context,
-                          screen: module,
-                          withNavBar: false,
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              ],
-            )
-          : Stack(
-              children: [
-                Column(
-                  children: [
-                    ClipRRect(
-                      borderRadius:
-                          const BorderRadius.vertical(top: Radius.circular(8)),
-                      child: Image.asset(
-                        image,
-                        height: _getImageHeight(context),
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(5),
-                      child: AutoSizeText(
-                        title,
-                        softWrap: true,
-                        style: GoogleFonts.poppins(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ],
-                ),
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.play_circle_fill,
-                      color: Colors.black54,
-                      size: _getIconSize(context),
-                    ),
-                    onPressed: () {
-                      PersistentNavBarNavigator.pushNewScreen(
-                        pageTransitionAnimation: PageTransitionAnimation.fade,
-                        context,
-                        screen: module,
-                        withNavBar: false,
-                      );
-                    },
-                  ),
-                ),
-              ],
+              ),
+            ],
+          ),
+          Positioned(
+            bottom: 0,
+            right: 0,
+            child: IconButton(
+              icon: Icon(
+                Icons.play_circle_fill,
+                color: Colors.black54,
+                size: _getIconSize(context),
+              ),
+              onPressed: () {
+                PersistentNavBarNavigator.pushNewScreen(
+                  pageTransitionAnimation: PageTransitionAnimation.fade,
+                  context,
+                  screen: module,
+                  withNavBar: false,
+                );
+              },
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRecommendedCourseCard(
+    BuildContext context,
+    String title,
+    String image,
+    Widget module,
+    List<String> recommededCourses,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 12.0, left: 8),
+      child: InkWell(
+        onTap: () {
+          PersistentNavBarNavigator.pushNewScreen(
+            pageTransitionAnimation: PageTransitionAnimation.fade,
+            context,
+            screen: module,
+            withNavBar: false,
+          );
+        },
+        child: Column(
+          children: [
+            Container(
+              width: 150,
+              height: 150,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: Colors.black,
+                  width: 2,
+                ),
+              ),
+              child: CircleAvatar(
+                radius: 80,
+                backgroundImage: AssetImage(image),
+              ),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            Text(title)
+          ],
+        ),
+      ),
     );
   }
 
