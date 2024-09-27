@@ -14,7 +14,7 @@ class Courses extends StatelessWidget {
     final titles = [
       'Financial Planning',
       'Budget & Savings',
-      'Frugal Living',
+      'Frugal Living and Spending Wisely',
       'Understanding Taxes',
       'Debt Management',
       'Investment Basics',
@@ -93,20 +93,24 @@ class Courses extends StatelessWidget {
               ),
               Expanded(
                 child: FutureBuilder<List<String>>(
-                  future: surveyProvider
-                      .predictAndStoreCourse(), // Fetch the recommended courses
+                  future: surveyProvider.hasCompletedSurvey
+                      ? surveyProvider
+                          .getRecommendedCourses() 
+                      : surveyProvider
+                          .predictAndStoreCourse(), 
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(
-                          child:
-                              CircularProgressIndicator()); // Show loading spinner
+                        child:
+                            CircularProgressIndicator(), 
+                      );
                     } else if (snapshot.hasError) {
                       return Text(
-                          'Error: ${snapshot.error}'); // Show error message
+                          'Error: ${snapshot.error}'); 
                     } else if (snapshot.hasData) {
                       List<String> recommendedCourses = snapshot.data ?? [];
 
-                      // Display the list of recommended courses
+                      
                       return ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: recommendedCourses.length,
@@ -114,7 +118,7 @@ class Courses extends StatelessWidget {
                           String recommendedTitle =
                               recommendedCourses[index].trim();
 
-                          // Find the index of the recommended title in the titles list (case insensitive)
+                          
                           int titleIndex = titles.indexWhere(
                             (title) =>
                                 title.trim().toLowerCase() ==
@@ -131,12 +135,12 @@ class Courses extends StatelessWidget {
                             );
                           } else {
                             return const SizedBox
-                                .shrink(); // Return an empty widget if not found
+                                .shrink(); 
                           }
                         },
                       );
                     }
-                    return const SizedBox.shrink(); // Fallback empty widget
+                    return const SizedBox.shrink(); 
                   },
                 ),
               ),
@@ -144,7 +148,7 @@ class Courses extends StatelessWidget {
                 flex: 2,
                 child: Column(
                   children: [
-                    const SizedBox(height: 15),
+                    const SizedBox(height: 5),
                     Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Align(
@@ -296,7 +300,7 @@ class Courses extends StatelessWidget {
 
   double _getImageHeight(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    if (width < 600) return 150;
+    if (width < 600) return 160;
     if (width < 900) return 200;
     return 250;
   }

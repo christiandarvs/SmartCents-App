@@ -39,9 +39,10 @@ class Home extends StatelessWidget {
     final hasCompletedSurvey =
         context.watch<SurveyProvider>().hasCompletedSurvey;
     return [
-      const Dashboard(),
-      const BudgetScreen(),
-      Scaffold(
+      _wrapWithScaffoldMessenger(
+          const Dashboard()), // Wrap with ScaffoldMessenger
+      _wrapWithScaffoldMessenger(const BudgetScreen()),
+      _wrapWithScaffoldMessenger(Scaffold(
         appBar: AppBar(
           backgroundColor: AppColors.primaryColor,
         ),
@@ -50,11 +51,11 @@ class Home extends StatelessWidget {
           width: 200,
           height: 200,
         ),
-      ),
-      hasCompletedSurvey
+      )),
+      _wrapWithScaffoldMessenger(hasCompletedSurvey
           ? const Courses()
-          : SurveyScreen(), // Conditional screen
-      Scaffold(
+          : SurveyScreen()), // Conditional screen wrapped with ScaffoldMessenger
+      _wrapWithScaffoldMessenger(Scaffold(
         appBar: AppBar(
           backgroundColor: AppColors.primaryColor,
         ),
@@ -63,8 +64,15 @@ class Home extends StatelessWidget {
           width: 200,
           height: 200,
         ),
-      ),
+      )),
     ];
+  }
+
+  // Helper method to wrap each screen with a ScaffoldMessenger
+  Widget _wrapWithScaffoldMessenger(Widget screen) {
+    return ScaffoldMessenger(
+      child: screen,
+    );
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {

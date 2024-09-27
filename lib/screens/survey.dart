@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:smartcents/providers/survey_provider.dart';
-import 'package:smartcents/screens/courses.dart';
 
 class SurveyScreen extends StatelessWidget {
   final List<String> _questions = [
     'Financial Planning',
     'Budget & Savings',
-    'Frugal Living',
+    'Frugal Living and Spending Wisely',
     'Understanding Taxes',
     'Investment Basics',
     'Debt Management',
@@ -25,22 +23,18 @@ class SurveyScreen extends StatelessWidget {
 
   void _submitSurvey(BuildContext context) async {
     if (_areAllQuestionsAnswered(context)) {
-      final surveyAnswers =
-          context.read<SurveyProvider>().getAnswers(); // Get answers
-      debugPrint('Survey answers: $surveyAnswers'); // Print the answers
+      final surveyAnswers = context.read<SurveyProvider>().getAnswers();
+      debugPrint('Survey answers: $surveyAnswers');
 
-      // Predict a course using the survey answers
       final predictedCourse =
           await context.read<SurveyProvider>().predictAndStoreCourse();
-      debugPrint('Predicted Course: $predictedCourse'); // Print the prediction
+      debugPrint('Predicted Course: $predictedCourse');
 
-      // Show prediction in a dialog
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Recommended Course'),
-          content: Text(predictedCourse
-              .join(', ')), // Ensure predictedCourse is a List<String>
+          content: Text(predictedCourse.join(', ')),
           actions: [
             TextButton(
               onPressed: () {

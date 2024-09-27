@@ -34,13 +34,21 @@ class Module extends StatelessWidget {
 
           if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('PDF downloaded to $filePath')),
+              SnackBar(
+                  showCloseIcon: true,
+                  behavior: SnackBarBehavior.floating,
+                  duration: const Duration(seconds: 4),
+                  content: Text('PDF downloaded to $filePath')),
             );
           }
         } catch (e) {
           if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Error saving PDF: $e')),
+              SnackBar(
+                  showCloseIcon: true,
+                  behavior: SnackBarBehavior.floating,
+                  duration: const Duration(seconds: 4),
+                  content: Text('Error saving PDF: $e')),
             );
           }
         }
@@ -48,6 +56,9 @@ class Module extends StatelessWidget {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
+              showCloseIcon: true,
+              behavior: SnackBarBehavior.floating,
+              duration: Duration(seconds: 4),
               content: Text(
                   'Please allow access so that the PDF can be downloaded.'),
             ),
@@ -58,6 +69,9 @@ class Module extends StatelessWidget {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
+              showCloseIcon: true,
+              behavior: SnackBarBehavior.floating,
+              duration: Duration(seconds: 4),
               content: Text('This feature is only available on Android.')),
         );
       }
@@ -66,30 +80,35 @@ class Module extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text(
-            title,
+    return PopScope(
+      onPopInvokedWithResult: (didPop, result) {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      },
+      child: SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            title: Text(
+              title,
+            ),
           ),
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                summary,
-                style:
-                    const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-                textAlign: TextAlign.center,
-              ),
-            ],
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  summary,
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.w400),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
           ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => downloadPdf(context),
-          child: const Icon(Icons.file_download),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () => downloadPdf(context),
+            child: const Icon(Icons.file_download),
+          ),
         ),
       ),
     );
