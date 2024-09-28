@@ -1,9 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:smartcents/providers/survey_provider.dart';
+import 'package:smartcents/providers/theme_provider.dart';
 import 'package:smartcents/widgets/module.dart';
 
 class Courses extends StatelessWidget {
@@ -48,16 +50,16 @@ class Courses extends StatelessWidget {
           summary: 'Explore tips and tricks for living a frugal lifestyle.',
           fileName: 'Reviewer.pdf'),
       const Module(
-          title: 'Investment Basics',
-          summary: 'Understand the fundamentals of investing.',
+          title: 'Understanding Taxes',
+          summary: 'Get insights into the tax system and how it affects you.',
           fileName: 'Reviewer.pdf'),
       const Module(
           title: 'Debt Management',
           summary: 'Learn how to manage and eliminate debt effectively.',
           fileName: 'Reviewer.pdf'),
       const Module(
-          title: 'Understanding Taxes',
-          summary: 'Get insights into the tax system and how it affects you.',
+          title: 'Investment Basics',
+          summary: 'Understand the fundamentals of investing.',
           fileName: 'Reviewer.pdf'),
       const Module(
           title: 'Financial Scams',
@@ -70,12 +72,13 @@ class Courses extends StatelessWidget {
     ];
 
     final surveyProvider = Provider.of<SurveyProvider>(context);
+    final themeProvider = Provider.of<ThemeProvider>(context);
 
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: const Text('Courses'),
+          title: const Text('Modules'),
         ),
         body: Center(
           child: Column(
@@ -85,7 +88,7 @@ class Courses extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    'Recommended Courses',
+                    'Recommended Modules',
                     style: GoogleFonts.poppins(
                         fontWeight: FontWeight.bold, fontSize: 18),
                   ),
@@ -94,23 +97,18 @@ class Courses extends StatelessWidget {
               Expanded(
                 child: FutureBuilder<List<String>>(
                   future: surveyProvider.hasCompletedSurvey
-                      ? surveyProvider
-                          .getRecommendedCourses() 
-                      : surveyProvider
-                          .predictAndStoreCourse(), 
+                      ? surveyProvider.getRecommendedCourses()
+                      : surveyProvider.predictAndStoreCourse(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(
-                        child:
-                            CircularProgressIndicator(), 
+                        child: CircularProgressIndicator(),
                       );
                     } else if (snapshot.hasError) {
-                      return Text(
-                          'Error: ${snapshot.error}'); 
+                      return Text('Error: ${snapshot.error}');
                     } else if (snapshot.hasData) {
                       List<String> recommendedCourses = snapshot.data ?? [];
 
-                      
                       return ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: recommendedCourses.length,
@@ -118,7 +116,6 @@ class Courses extends StatelessWidget {
                           String recommendedTitle =
                               recommendedCourses[index].trim();
 
-                          
                           int titleIndex = titles.indexWhere(
                             (title) =>
                                 title.trim().toLowerCase() ==
@@ -134,13 +131,12 @@ class Courses extends StatelessWidget {
                               recommendedCourses,
                             );
                           } else {
-                            return const SizedBox
-                                .shrink(); 
+                            return const SizedBox.shrink();
                           }
                         },
                       );
                     }
-                    return const SizedBox.shrink(); 
+                    return const SizedBox.shrink();
                   },
                 ),
               ),
@@ -154,7 +150,7 @@ class Courses extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Available Courses',
+                          'Available Modules',
                           style: GoogleFonts.poppins(
                               fontWeight: FontWeight.bold, fontSize: 18),
                         ),
@@ -168,7 +164,11 @@ class Courses extends StatelessWidget {
                         ),
                         itemCount: titles.length,
                         itemBuilder: (ctx, index) => _buildCourseCard(
-                            ctx, titles[index], images[index], modules[index]),
+                            ctx,
+                            titles[index],
+                            images[index],
+                            modules[index],
+                            themeProvider),
                       ),
                     ),
                   ],
@@ -188,12 +188,8 @@ class Courses extends StatelessWidget {
     return 4;
   }
 
-  Widget _buildCourseCard(
-    BuildContext context,
-    String title,
-    String image,
-    Widget module,
-  ) {
+  Widget _buildCourseCard(BuildContext context, String title, String image,
+      Widget module, ThemeProvider themeProvider) {
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(
@@ -235,7 +231,7 @@ class Courses extends StatelessWidget {
             child: IconButton(
               icon: Icon(
                 Icons.play_circle_fill,
-                color: Colors.black54,
+                color: themeProvider.isDarkMode ? Colors.white : Colors.black54,
                 size: _getIconSize(context),
               ),
               onPressed: () {
@@ -264,6 +260,7 @@ class Courses extends StatelessWidget {
       padding: const EdgeInsets.only(right: 12.0, left: 8),
       child: InkWell(
         onTap: () {
+          HapticFeedback.mediumImpact();
           PersistentNavBarNavigator.pushNewScreen(
             pageTransitionAnimation: PageTransitionAnimation.fade,
             context,
@@ -300,7 +297,7 @@ class Courses extends StatelessWidget {
 
   double _getImageHeight(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    if (width < 600) return 160;
+    if (width < 600) return 150;
     if (width < 900) return 200;
     return 250;
   }

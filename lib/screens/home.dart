@@ -6,6 +6,7 @@ import 'package:smartcents/providers/survey_provider.dart';
 import 'package:smartcents/screens/budget_screen.dart';
 import 'package:smartcents/screens/courses.dart';
 import 'package:smartcents/screens/dashboard.dart';
+import 'package:smartcents/screens/settings.dart';
 import 'package:smartcents/screens/survey.dart';
 import 'package:smartcents/widgets/exit_dialog.dart';
 
@@ -26,6 +27,9 @@ class Home extends StatelessWidget {
       child: SafeArea(
         child: PersistentTabView(
           context,
+          navBarStyle: NavBarStyle.style9,
+          navBarHeight: 70,
+          padding: const EdgeInsets.all(10),
           handleAndroidBackButtonPress: false,
           backgroundColor: AppColors.primaryColor,
           screens: _buildScreens(context),
@@ -55,15 +59,8 @@ class Home extends StatelessWidget {
       _wrapWithScaffoldMessenger(hasCompletedSurvey
           ? const Courses()
           : SurveyScreen()), // Conditional screen wrapped with ScaffoldMessenger
-      _wrapWithScaffoldMessenger(Scaffold(
-        appBar: AppBar(
-          backgroundColor: AppColors.primaryColor,
-        ),
-        body: Container(
-          color: Colors.white,
-          width: 200,
-          height: 200,
-        ),
+      _wrapWithScaffoldMessenger(const Scaffold(
+        body: Settings(),
       )),
     ];
   }
@@ -102,7 +99,7 @@ class Home extends StatelessWidget {
       ),
       PersistentBottomNavBarItem(
         title: 'Settings',
-        icon: const Icon(Icons.more_horiz_sharp),
+        icon: const Icon(Icons.settings),
         activeColorPrimary: AppColors.activeIconColor,
         inactiveColorPrimary: AppColors.buttonColor,
       ),
