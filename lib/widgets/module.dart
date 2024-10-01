@@ -93,14 +93,17 @@ class Module extends StatelessWidget {
             ),
           ),
           body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+            child: ListView(
+              // mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  summary,
-                  style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.w400),
-                  textAlign: TextAlign.center,
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Text(
+                    summary,
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.w400),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ],
             ),

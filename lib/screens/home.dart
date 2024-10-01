@@ -3,6 +3,7 @@ import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:smartcents/constants/colors.dart';
 import 'package:smartcents/providers/survey_provider.dart';
+import 'package:smartcents/screens/budget_input_screen.dart';
 import 'package:smartcents/screens/budget_screen.dart';
 import 'package:smartcents/screens/courses.dart';
 import 'package:smartcents/screens/dashboard.dart';
@@ -31,7 +32,7 @@ class Home extends StatelessWidget {
           navBarHeight: 70,
           padding: const EdgeInsets.all(10),
           handleAndroidBackButtonPress: false,
-          backgroundColor: AppColors.primaryColor,
+          backgroundColor: const Color(0xff6B4D57),
           screens: _buildScreens(context),
           items: _navBarsItems(),
         ),
@@ -46,16 +47,7 @@ class Home extends StatelessWidget {
       _wrapWithScaffoldMessenger(
           const Dashboard()), // Wrap with ScaffoldMessenger
       _wrapWithScaffoldMessenger(const BudgetScreen()),
-      _wrapWithScaffoldMessenger(Scaffold(
-        appBar: AppBar(
-          backgroundColor: AppColors.primaryColor,
-        ),
-        body: Container(
-          color: Colors.white,
-          width: 200,
-          height: 200,
-        ),
-      )),
+      _wrapWithScaffoldMessenger(const BudgetInputScreen()),
       _wrapWithScaffoldMessenger(hasCompletedSurvey
           ? const Courses()
           : SurveyScreen()), // Conditional screen wrapped with ScaffoldMessenger

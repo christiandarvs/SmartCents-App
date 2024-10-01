@@ -10,7 +10,7 @@ class BalanceCard extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: AppColors.buttonColor,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: Colors.black), // Black border
       ),
@@ -32,13 +32,13 @@ class BalanceCard extends StatelessWidget {
               contentPadding:
                   EdgeInsets.zero, // Removes default padding of ListTile
               leading: const Icon(Icons.account_balance_wallet,
-                  color: Colors.white), // Optional icon
+                  color: Colors.black), // Optional icon
               title: Text(
                 'Balance',
                 style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Colors.black),
               ),
               subtitle: const Text(
                 'Current Account Balance', // Optional subtitle
@@ -65,7 +65,7 @@ class BalanceCard extends StatelessWidget {
                 'Limit: 15,000 PHP',
                 style: TextStyle(
                   fontSize: 15,
-                  color: Colors.white, // Grey color for the limit text
+                  color: Colors.black, // Grey color for the limit text
                 ),
               ),
             ),

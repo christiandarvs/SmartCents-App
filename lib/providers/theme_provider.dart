@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // Import SharedPreferences
-import 'package:smartcents/constants/colors.dart';
+// import 'package:smartcents/constants/colors.dart';
 
 class ThemeProvider extends ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.light;
@@ -44,7 +44,7 @@ class ThemeProvider extends ChangeNotifier {
     appBarTheme: AppBarTheme(
       iconTheme: const IconThemeData(color: Colors.white),
       shadowColor: Colors.black,
-      backgroundColor: AppColors.primaryColor,
+      backgroundColor: const Color(0xff6B4D57),
       titleTextStyle: GoogleFonts.poppins(
           color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
     ),
@@ -54,7 +54,7 @@ class ThemeProvider extends ChangeNotifier {
     appBarTheme: AppBarTheme(
       iconTheme: const IconThemeData(color: Colors.white),
       shadowColor: Colors.black,
-      backgroundColor: AppColors.primaryColor,
+      backgroundColor: const Color(0xff6B4D57),
       titleTextStyle: GoogleFonts.poppins(
           color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
     ),

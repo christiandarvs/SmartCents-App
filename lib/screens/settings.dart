@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:smartcents/constants/colors.dart';
 import 'package:smartcents/providers/theme_provider.dart';
 
 class Settings extends StatelessWidget {
@@ -18,6 +19,7 @@ class Settings extends StatelessWidget {
               child: ListTile(
                 title: const Text('Dark Mode'),
                 trailing: Switch(
+                  activeColor: AppColors.buttonColor,
                   value: Provider.of<ThemeProvider>(context).themeMode ==
                       ThemeMode.dark,
                   onChanged: (value) {

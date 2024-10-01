@@ -39,20 +39,20 @@ class Courses extends StatelessWidget {
       const Module(
           title: 'Financial Planning',
           summary: 'Learn how to create a comprehensive financial plan.',
-          fileName: 'Reviewer.pdf'),
+          fileName: 'Financial Planning.pdf'),
       const Module(
           title: 'Budget and Savings',
           summary:
               'Discover effective budgeting techniques and saving strategies.',
-          fileName: 'Reviewer.pdf'),
+          fileName: 'Budgeting & Saving.pdf'),
       const Module(
           title: 'Frugal Living',
           summary: 'Explore tips and tricks for living a frugal lifestyle.',
-          fileName: 'Reviewer.pdf'),
+          fileName: 'Frugal Living and Spending Wisely.pdf'),
       const Module(
           title: 'Understanding Taxes',
           summary: 'Get insights into the tax system and how it affects you.',
-          fileName: 'Reviewer.pdf'),
+          fileName: 'Understanding Taxes.pdf'),
       const Module(
           title: 'Debt Management',
           summary: 'Learn how to manage and eliminate debt effectively.',
@@ -60,7 +60,7 @@ class Courses extends StatelessWidget {
       const Module(
           title: 'Investment Basics',
           summary: 'Understand the fundamentals of investing.',
-          fileName: 'Reviewer.pdf'),
+          fileName: 'Investing Basics.pdf'),
       const Module(
           title: 'Financial Scams',
           summary: 'Recognize and avoid common financial scams.',
@@ -77,6 +77,7 @@ class Courses extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: const Color(0xff6B4D57),
           automaticallyImplyLeading: false,
           title: const Text('Modules'),
         ),
@@ -124,12 +125,12 @@ class Courses extends StatelessWidget {
 
                           if (titleIndex != -1) {
                             return _buildRecommendedCourseCard(
-                              context,
-                              titles[titleIndex],
-                              images[titleIndex],
-                              modules[titleIndex],
-                              recommendedCourses,
-                            );
+                                context,
+                                titles[titleIndex],
+                                images[titleIndex],
+                                modules[titleIndex],
+                                recommendedCourses,
+                                themeProvider);
                           } else {
                             return const SizedBox.shrink();
                           }
@@ -250,12 +251,12 @@ class Courses extends StatelessWidget {
   }
 
   Widget _buildRecommendedCourseCard(
-    BuildContext context,
-    String title,
-    String image,
-    Widget module,
-    List<String> recommededCourses,
-  ) {
+      BuildContext context,
+      String title,
+      String image,
+      Widget module,
+      List<String> recommededCourses,
+      ThemeProvider themeProvider) {
     return Padding(
       padding: const EdgeInsets.only(right: 12.0, left: 8),
       child: InkWell(
@@ -276,7 +277,7 @@ class Courses extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: Colors.black,
+                  color: themeProvider.isDarkMode ? Colors.white : Colors.black,
                   width: 2,
                 ),
               ),

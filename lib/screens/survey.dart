@@ -4,12 +4,12 @@ import 'package:smartcents/providers/survey_provider.dart';
 
 class SurveyScreen extends StatelessWidget {
   final List<String> _questions = [
-    'Financial Planning',
-    'Budget & Savings',
-    'Frugal Living and Spending Wisely',
-    'Understanding Taxes',
-    'Investment Basics',
-    'Debt Management',
+    'I know what Financial Planning is.',
+    'I know what Budget & Savings is.',
+    'I follow a frugal lifestyle.',
+    'I know how taxes work.',
+    'I know how investments work.',
+    'I pay my bills on time.',
   ];
 
   SurveyScreen({super.key});

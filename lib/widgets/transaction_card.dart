@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:smartcents/constants/colors.dart';
 
 class TransactionCard extends StatelessWidget {
   const TransactionCard({super.key});
@@ -36,7 +35,7 @@ class TransactionCard extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: AppColors.buttonColor,
+        color: const Color.fromARGB(255, 135, 209, 201),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: Colors.black), // Black border
       ),
@@ -53,9 +52,9 @@ class TransactionCard extends StatelessWidget {
               title: Text(
                 'Transaction History',
                 style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Colors.black),
               ),
             ),
             Container(
@@ -71,11 +70,12 @@ class TransactionCard extends StatelessWidget {
                   return ListTile(
                     title: Text(
                       transactionHistory[index],
-                      style: GoogleFonts.poppins(),
+                      style: GoogleFonts.poppins(color: Colors.black),
                     ),
                     trailing: Text(
                       '₱ ${prices[index]}',
-                      style: GoogleFonts.montserrat(fontSize: 15),
+                      style: GoogleFonts.montserrat(
+                          fontSize: 15, color: Colors.black),
                     ),
                   );
                 },
