@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartcents/constants/colors.dart';
 import 'package:smartcents/screens/home.dart';
@@ -47,12 +48,13 @@ class GetStarted extends StatelessWidget {
   List<PageViewModel> _buildPages() {
     return [
       _createPageViewModel(
-          title: '',
-          body: "",
+          title: 'Welcome to SmartCents',
+          body: "Where your financial literacy begins",
           imagePath: './assets/get_started_coin.png',
           imageHeight: imageHeight,
           imageWidth: imageSize,
-          imageFlex: 30),
+          imageFlex: 2,
+          usesLottie: true),
       _createPageViewModel(
         title: "Your Path to Smart Money Habits",
         body:
@@ -74,28 +76,31 @@ class GetStarted extends StatelessWidget {
     ];
   }
 
-  PageViewModel _createPageViewModel({
-    required String title,
-    required String body,
-    required String imagePath,
-    double imageHeight = 350,
-    double imageWidth = double.infinity,
-    int? imageFlex,
-  }) {
+  PageViewModel _createPageViewModel(
+      {required String title,
+      required String body,
+      required String imagePath,
+      double imageHeight = 350,
+      double imageWidth = double.infinity,
+      int? imageFlex,
+      bool? usesLottie}) {
     return PageViewModel(
       title: title,
       body: body,
       image: Center(
-        child: Image.asset(imagePath,
-            height: imageHeight, width: 350, fit: BoxFit.contain),
+        child: (usesLottie ?? false)
+            ? Lottie.asset('./assets/lottie-animation.json',
+                fit: BoxFit.cover, height: imageHeight, width: 350)
+            : Image.asset(imagePath,
+                height: imageHeight, width: 350, fit: BoxFit.contain),
       ),
       decoration: PageDecoration(
           bodyTextStyle: GoogleFonts.manrope(
-              fontSize: 18, fontWeight: FontWeight.normal, color: Colors.white),
+              fontSize: 18, fontWeight: FontWeight.normal, color: Colors.black),
           titleTextStyle: GoogleFonts.poppins(
-              fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white),
+              fontWeight: FontWeight.bold, fontSize: 20, color: Colors.black),
           imagePadding: const EdgeInsets.only(top: 35),
-          pageColor: AppColors.primaryColor,
+          pageColor: Colors.white,
           imageFlex: imageFlex ?? 1),
     );
   }
