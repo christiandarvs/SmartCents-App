@@ -49,6 +49,9 @@ class SurveyScreen extends StatelessWidget {
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
+            showCloseIcon: true,
+            behavior: SnackBarBehavior.floating,
+            duration: Duration(seconds: 4),
             content: Text('Please answer all questions before submitting.')),
       );
     }

@@ -27,7 +27,7 @@ class BalanceCard extends StatelessWidget {
               trailing: const CircleAvatar(
                 radius: 30,
                 backgroundColor: Colors.transparent,
-                backgroundImage: AssetImage('./assets/coin.png'),
+                backgroundImage: AssetImage('./assets/images/coin.png'),
               ),
               contentPadding:
                   EdgeInsets.zero, // Removes default padding of ListTile

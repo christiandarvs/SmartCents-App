@@ -25,14 +25,14 @@ class Courses extends StatelessWidget {
     ];
 
     final images = [
-      './assets/Financial Planning.png',
-      './assets/Budget & Savings.png',
-      './assets/Frugal Living.png',
-      './assets/Understanding Taxes.png',
-      './assets/Debt Management.png',
-      './assets/Investment Basics.png',
-      './assets/Financial_Scams.png',
-      './assets/Financial Planning.png',
+      './assets/images/Financial Planning.png',
+      './assets/images/Budget & Savings.png',
+      './assets/images/Frugal Living.png',
+      './assets/images/Understanding Taxes.png',
+      './assets/images/Debt Management.png',
+      './assets/images/Investment Basics.png',
+      './assets/images/Financial_Scams.png',
+      './assets/images/Financial Planning.png',
     ];
 
     final modules = [

@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartcents/providers/budget_provider.dart';
 import 'package:smartcents/providers/permission_provider.dart';
 import 'package:smartcents/providers/survey_provider.dart';
-import 'package:smartcents/providers/theme_provider.dart'; // Import ThemeProvider
+import 'package:smartcents/providers/theme_provider.dart';
 import 'package:smartcents/screens/get_started.dart';
 import 'package:smartcents/screens/home.dart';
 import 'package:flutter/services.dart';
@@ -31,8 +31,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => BudgetProvider()),
         ChangeNotifierProvider(create: (context) => PermissionProvider()),
         ChangeNotifierProvider(create: (context) => SurveyProvider()),
-        ChangeNotifierProvider(
-            create: (context) => ThemeProvider()), // Initialize ThemeProvider
+        ChangeNotifierProvider(create: (context) => ThemeProvider()),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {
@@ -41,8 +40,7 @@ class MyApp extends StatelessWidget {
             title: 'SmartCents',
             theme: themeProvider.themeLight,
             darkTheme: themeProvider.themeDark,
-            themeMode:
-                themeProvider.themeMode, // Use themeMode to toggle themes
+            themeMode: themeProvider.themeMode,
             home: isFirstTime ? const GetStarted() : const Home(),
           );
         },

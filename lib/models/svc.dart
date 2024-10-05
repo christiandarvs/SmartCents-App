@@ -48,7 +48,7 @@ class SVMModel {
   ];
 
   Future<void> loadModel() async {
-    String modelData = await rootBundle.loadString("assets/flazy.json");
+    String modelData = await rootBundle.loadString("assets/jsons/flazy.json");
     svc = SVC.fromMap(json.decode(modelData));
   }
 

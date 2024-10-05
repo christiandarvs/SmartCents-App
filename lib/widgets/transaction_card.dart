@@ -60,7 +60,7 @@ class TransactionCard extends StatelessWidget {
             Container(
               margin: const EdgeInsets.only(left: 10, right: 8),
               width: double.infinity,
-              height: 190, // Height of the card
+              height: 160, // Height of the card
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.black),
               ),

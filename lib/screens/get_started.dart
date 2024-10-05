@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:smartcents/constants/colors.dart';
 import 'package:smartcents/screens/home.dart';
 import 'package:smartcents/widgets/exit_dialog.dart';
 
@@ -50,28 +49,28 @@ class GetStarted extends StatelessWidget {
       _createPageViewModel(
           title: 'Welcome to SmartCents',
           body: "Where your financial literacy begins",
-          imagePath: './assets/get_started_coin.png',
+          imagePath: './assets/images/get_started_coin.png',
           imageHeight: imageHeight,
           imageWidth: imageSize,
-          imageFlex: 2,
+          // imageFlex: 2,
           usesLottie: true),
       _createPageViewModel(
         title: "Your Path to Smart Money Habits",
         body:
             "Understand the basics of budgeting, saving, investing, and more with easy-to-follow lessons.",
-        imagePath: './assets/2nd-screen.png',
+        imagePath: './assets/images/Accountant.png',
       ),
       _createPageViewModel(
         title: "Achieve Your Financial Goals",
         body:
             "Track your progress as you work toward financial stability and success.",
-        imagePath: './assets/3rd-screen.png',
+        imagePath: './assets/images/Career.png',
       ),
       _createPageViewModel(
         title: "Empower Yourself with Financial Knowledge",
         body:
             "Master the essentials of money management with interactive tools and resources.",
-        imagePath: './assets/4th-screen.png',
+        imagePath: './assets/images/Bookworm.png',
       ),
     ];
   }
@@ -89,7 +88,7 @@ class GetStarted extends StatelessWidget {
       body: body,
       image: Center(
         child: (usesLottie ?? false)
-            ? Lottie.asset('./assets/lottie-animation.json',
+            ? Lottie.asset('./assets/jsons/lottie-animation.json',
                 fit: BoxFit.cover, height: imageHeight, width: 350)
             : Image.asset(imagePath,
                 height: imageHeight, width: 350, fit: BoxFit.contain),
@@ -100,7 +99,7 @@ class GetStarted extends StatelessWidget {
           titleTextStyle: GoogleFonts.poppins(
               fontWeight: FontWeight.bold, fontSize: 20, color: Colors.black),
           imagePadding: const EdgeInsets.only(top: 35),
-          pageColor: Colors.white,
+          pageColor: const Color.fromARGB(255, 231, 176, 176),
           imageFlex: imageFlex ?? 1),
     );
   }

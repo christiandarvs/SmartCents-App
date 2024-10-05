@@ -20,7 +20,8 @@ class Module extends StatelessWidget {
       final permissionStatus = await Permission.manageExternalStorage.request();
       if (permissionStatus.isGranted) {
         try {
-          final ByteData byteData = await rootBundle.load('assets/$fileName');
+          final ByteData byteData =
+              await rootBundle.load('assets/pdfs/$fileName');
           final Directory downloadDir =
               Directory('/storage/emulated/0/Download');
 
