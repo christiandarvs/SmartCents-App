@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:provider/provider.dart';
+import 'package:smartcents/constants/colors.dart';
 import 'package:smartcents/providers/survey_provider.dart';
 import 'package:smartcents/providers/theme_provider.dart';
 import 'package:smartcents/widgets/module.dart';
@@ -34,6 +35,8 @@ class Courses extends StatelessWidget {
       './assets/images/Financial_Scams.png',
       './assets/images/Financial Planning.png',
     ];
+
+    List<String> globalRecommendedCourses = [];
 
     final modules = [
       const Module(
@@ -109,6 +112,7 @@ class Courses extends StatelessWidget {
                       return Text('Error: ${snapshot.error}');
                     } else if (snapshot.hasData) {
                       List<String> recommendedCourses = snapshot.data ?? [];
+                      globalRecommendedCourses.addAll(recommendedCourses);
 
                       return ListView.builder(
                         scrollDirection: Axis.horizontal,
@@ -122,7 +126,7 @@ class Courses extends StatelessWidget {
                                 title.trim().toLowerCase() ==
                                 recommendedTitle.toLowerCase(),
                           );
-
+                          debugPrint(recommendedCourses.toString());
                           if (titleIndex != -1) {
                             return _buildRecommendedCourseCard(
                                 context,
@@ -169,7 +173,8 @@ class Courses extends StatelessWidget {
                             titles[index],
                             images[index],
                             modules[index],
-                            themeProvider),
+                            themeProvider,
+                            globalRecommendedCourses),
                       ),
                     ),
                   ],
@@ -189,8 +194,13 @@ class Courses extends StatelessWidget {
     return 4;
   }
 
-  Widget _buildCourseCard(BuildContext context, String title, String image,
-      Widget module, ThemeProvider themeProvider) {
+  Widget _buildCourseCard(
+      BuildContext context,
+      String title,
+      String image,
+      Widget module,
+      ThemeProvider themeProvider,
+      List<String> recommendedCourses) {
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(
@@ -236,12 +246,52 @@ class Courses extends StatelessWidget {
                 size: _getIconSize(context),
               ),
               onPressed: () {
-                PersistentNavBarNavigator.pushNewScreen(
-                  pageTransitionAnimation: PageTransitionAnimation.fade,
-                  context,
-                  screen: module,
-                  withNavBar: false,
-                );
+                // Check if the selected course is in the recommended courses
+                if (recommendedCourses.any((course) =>
+                    course.trim().toLowerCase() ==
+                    title.trim().toLowerCase())) {
+                  // If it's a recommended course, proceed to the module
+                  PersistentNavBarNavigator.pushNewScreen(
+                    pageTransitionAnimation: PageTransitionAnimation.fade,
+                    context,
+                    screen: module,
+                    withNavBar: false,
+                  );
+                } else {
+                  // Show an alert dialog with a message about recommended courses
+                  showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text("Wait! ✋"),
+                      content: const Text(
+                          "There is a recommended course you might want to check out."),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text(
+                            "OK",
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            PersistentNavBarNavigator.pushNewScreen(
+                              pageTransitionAnimation:
+                                  PageTransitionAnimation.fade,
+                              context,
+                              screen: module,
+                              withNavBar: false,
+                            );
+                          },
+                          child: const Text("Later"),
+                        ),
+                      ],
+                    ),
+                  );
+                }
               },
             ),
           ),

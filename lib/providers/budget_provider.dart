@@ -1,26 +1,31 @@
 import 'package:flutter/material.dart';
-import '../models/budget_item.dart';
 
-class BudgetProvider with ChangeNotifier {
-  final List<BudgetItem> _items = [];
+class BudgetProvider extends ChangeNotifier {
+  String _itemName = '';
+  String _amount = '';
+  String _category = 'Food';
 
-  List<BudgetItem> get items => _items;
+  String get itemName => _itemName;
+  String get amount => _amount;
+  String get category => _category;
 
-  double get totalBudget => _items.fold(0, (sum, item) => sum + item.amount);
-
-  void addItem(String name, double amount) {
-    _items.add(BudgetItem(name: name, amount: amount));
+  void setItemName(String name) {
+    _itemName = name;
     notifyListeners();
   }
 
-  void removeItem(int index) {
-    _items.removeAt(index);
+  void setAmount(String amt) {
+    _amount = amt;
     notifyListeners();
   }
 
-  void loadBudgets() {
-    // Load budgets from persistent storage or any source
-    // Notify listeners after loading if necessary
+  void setCategory(String cat) {
+    _category = cat;
+    notifyListeners();
+  }
+
+  void submitData() {
+    // Handle submission logic here
     notifyListeners();
   }
 }

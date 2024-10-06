@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:smartcents/screens/no_budget_data.dart';
 
 class BudgetScreen extends StatefulWidget {
   const BudgetScreen({super.key});
@@ -18,30 +19,34 @@ class _BudgetScreenState extends State<BudgetScreen> {
     {'name': 'Health', 'amount': 150},
   ];
 
+  bool hasNoData = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Budget Tracker'),
       ),
-      body: Column(
-        children: [
-          const SizedBox(height: 20),
+      body: hasNoData
+          ? const NoBudgetDataScreen()
+          : Column(
+              children: [
+                const SizedBox(height: 20),
 
-          const SizedBox(height: 20),
-          // Pie chart for budget distribution
-          Expanded(
-            child: PieChart(
-              PieChartData(
-                sections: _buildPieChartSections(),
-                centerSpaceRadius: 50,
-                sectionsSpace: 2,
-              ),
+                const SizedBox(height: 20),
+                // Pie chart for budget distribution
+                Expanded(
+                  child: PieChart(
+                    PieChartData(
+                      sections: _buildPieChartSections(),
+                      centerSpaceRadius: 50,
+                      sectionsSpace: 2,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+              ],
             ),
-          ),
-          const SizedBox(height: 20),
-        ],
-      ),
     );
   }
 

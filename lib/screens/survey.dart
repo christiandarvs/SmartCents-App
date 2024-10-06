@@ -28,6 +28,9 @@ class SurveyScreen extends StatelessWidget {
 
       final predictedCourse =
           await context.read<SurveyProvider>().predictAndStoreCourse();
+
+      if (!context.mounted) return;
+
       debugPrint('Predicted Course: $predictedCourse');
 
       showDialog(
@@ -47,12 +50,15 @@ class SurveyScreen extends StatelessWidget {
         ),
       );
     } else {
+      if (!context.mounted) return;
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-            showCloseIcon: true,
-            behavior: SnackBarBehavior.floating,
-            duration: Duration(seconds: 4),
-            content: Text('Please answer all questions before submitting.')),
+          showCloseIcon: true,
+          behavior: SnackBarBehavior.floating,
+          duration: Duration(seconds: 4),
+          content: Text('Please answer all questions before submitting.'),
+        ),
       );
     }
   }

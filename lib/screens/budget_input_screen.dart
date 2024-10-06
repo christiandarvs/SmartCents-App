@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:smartcents/providers/budget_provider.dart';
 
 class BudgetInputScreen extends StatelessWidget {
   const BudgetInputScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController itemName = TextEditingController();
     return SafeArea(
       child: Scaffold(
-        resizeToAvoidBottomInset:
-            false, // Prevent FAB from moving when keyboard appears
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: const Text('Budget Input'),
         ),
-        body: const Column(
+        body: Column(
           children: [
-            SizedBox(
-              height: 10,
-            ),
-            Padding(
+            const SizedBox(height: 10),
+            const Padding(
               padding: EdgeInsets.all(8.0),
               child: Align(
                 alignment: Alignment.centerLeft,
@@ -26,38 +24,50 @@ class BudgetInputScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(right: 20, left: 20, top: 20),
-              child: TextField(
-                textInputAction: TextInputAction.next,
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  labelText: 'Item Name',
-                  border: OutlineInputBorder(),
-                ),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Consumer<BudgetProvider>(
+                builder: (context, budgetProvider, child) {
+                  return TextField(
+                    textInputAction: TextInputAction.next,
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                      // labelText: 'Item Name',
+                      border: OutlineInputBorder(),
+                    ),
+                    onChanged: (value) {
+                      budgetProvider.setItemName(value);
+                    },
+                  );
+                },
               ),
             ),
-            SizedBox(
-              height: 20,
-            ),
-            Padding(
+            const SizedBox(height: 20),
+            const Padding(
               padding: EdgeInsets.all(8.0),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: Text('Item Name'),
+                child: Text('Amount'),
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(right: 20, left: 20, top: 20),
-              child: TextField(
-                decoration: InputDecoration(
-                  labelText: 'Amount',
-                  border: OutlineInputBorder(),
-                ),
-                keyboardType: TextInputType.number,
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Consumer<BudgetProvider>(
+                builder: (context, budgetProvider, child) {
+                  return TextField(
+                    decoration: const InputDecoration(
+                      // labelText: 'Amount',
+                      border: OutlineInputBorder(),
+                    ),
+                    keyboardType: TextInputType.number,
+                    onChanged: (value) {
+                      budgetProvider.setAmount(value);
+                    },
+                  );
+                },
               ),
             ),
-            SizedBox(height: 15),
-            Padding(
+            const SizedBox(height: 15),
+            const Padding(
               padding: EdgeInsets.all(8.0),
               child: Align(
                 alignment: Alignment.centerLeft,
@@ -65,34 +75,48 @@ class BudgetInputScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(8),
-              child: DropdownMenu(
-                label: Text('Category'),
-                initialSelection: 'Food',
-                dropdownMenuEntries: [
-                  DropdownMenuEntry(value: 'Food', label: 'Food'),
-                  DropdownMenuEntry(value: 'Transport', label: 'Transport'),
-                  DropdownMenuEntry(
-                      value: 'Entertainment', label: 'Entertainment'),
-                  DropdownMenuEntry(value: 'Utilities', label: 'Utilities'),
-                  DropdownMenuEntry(value: 'Health', label: 'Health'),
-                ],
-                width: 200,
+              padding: const EdgeInsets.all(8),
+              child: Consumer<BudgetProvider>(
+                builder: (context, budgetProvider, child) {
+                  return DropdownButton<String>(
+                    value: budgetProvider.category,
+                    onChanged: (value) {
+                      if (value != null) {
+                        budgetProvider.setCategory(value);
+                      }
+                    },
+                    items: const [
+                      DropdownMenuItem(value: 'Food', child: Text('Food')),
+                      DropdownMenuItem(
+                          value: 'Transport', child: Text('Transport')),
+                      DropdownMenuItem(
+                          value: 'Entertainment', child: Text('Entertainment')),
+                      DropdownMenuItem(
+                          value: 'Utilities', child: Text('Utilities')),
+                      DropdownMenuItem(value: 'Health', child: Text('Health')),
+                    ],
+                  );
+                },
               ),
             ),
           ],
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('data'),
-                behavior: SnackBarBehavior.floating,
-              ),
+        floatingActionButton: Consumer<BudgetProvider>(
+          builder: (context, budgetProvider, child) {
+            return FloatingActionButton(
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                        'Item: ${budgetProvider.itemName}, Amount: ${budgetProvider.amount}, Category: ${budgetProvider.category}'),
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+                budgetProvider.submitData();
+              },
+              child: const Icon(Icons.add),
             );
-            debugPrint(itemName.text);
           },
-          child: const Icon(Icons.add),
         ),
       ),
     );
