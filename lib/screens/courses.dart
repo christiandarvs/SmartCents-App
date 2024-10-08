@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:provider/provider.dart';
-import 'package:smartcents/constants/colors.dart';
 import 'package:smartcents/providers/survey_provider.dart';
 import 'package:smartcents/providers/theme_provider.dart';
 import 'package:smartcents/widgets/module.dart';
@@ -82,7 +81,7 @@ class Courses extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: const Color(0xff6B4D57),
           automaticallyImplyLeading: false,
-          title: const Text('Modules'),
+          title: const Text('Courses'),
         ),
         body: Center(
           child: Column(
@@ -92,7 +91,9 @@ class Courses extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    'Recommended Modules',
+                    globalRecommendedCourses.length > 1
+                        ? 'Recommended Courses'
+                        : 'Recommended Course',
                     style: GoogleFonts.poppins(
                         fontWeight: FontWeight.bold, fontSize: 18),
                   ),
@@ -155,7 +156,7 @@ class Courses extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Available Modules',
+                          'Available Courses',
                           style: GoogleFonts.poppins(
                               fontWeight: FontWeight.bold, fontSize: 18),
                         ),

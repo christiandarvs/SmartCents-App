@@ -27,26 +27,24 @@ class _BudgetScreenState extends State<BudgetScreen> {
       appBar: AppBar(
         title: const Text('Budget Tracker'),
       ),
-      body: hasNoData
-          ? const NoBudgetDataScreen()
-          : Column(
-              children: [
-                const SizedBox(height: 20),
+      body: Column(
+        children: [
+          const SizedBox(height: 20),
 
-                const SizedBox(height: 20),
-                // Pie chart for budget distribution
-                Expanded(
-                  child: PieChart(
-                    PieChartData(
-                      sections: _buildPieChartSections(),
-                      centerSpaceRadius: 50,
-                      sectionsSpace: 2,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-              ],
+          const SizedBox(height: 20),
+          // Pie chart for budget distribution
+          Expanded(
+            child: PieChart(
+              PieChartData(
+                sections: _buildPieChartSections(),
+                centerSpaceRadius: 50,
+                sectionsSpace: 2,
+              ),
             ),
+          ),
+          const SizedBox(height: 20),
+        ],
+      ),
     );
   }
 

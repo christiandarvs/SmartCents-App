@@ -11,7 +11,7 @@ class BudgetInputScreen extends StatelessWidget {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: const Text('Budget Input'),
+          title: const Text('Add Transaction'),
         ),
         body: Column(
           children: [

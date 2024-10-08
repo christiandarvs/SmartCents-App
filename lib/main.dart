@@ -5,6 +5,7 @@ import 'package:smartcents/providers/budget_provider.dart';
 import 'package:smartcents/providers/permission_provider.dart';
 import 'package:smartcents/providers/survey_provider.dart';
 import 'package:smartcents/providers/theme_provider.dart';
+// import 'package:smartcents/providers/tts_provider.dart';
 import 'package:smartcents/screens/get_started.dart';
 import 'package:smartcents/screens/home.dart';
 import 'package:flutter/services.dart';
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => PermissionProvider()),
         ChangeNotifierProvider(create: (context) => SurveyProvider()),
         ChangeNotifierProvider(create: (context) => ThemeProvider()),
+        // ChangeNotifierProvider(create: (context) => TTSProvider())
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {

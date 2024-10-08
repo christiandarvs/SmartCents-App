@@ -69,32 +69,37 @@ class SurveyScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Recommendation Survey'),
       ),
-      body: ListView.builder(
-        itemCount: _questions.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding:
-                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
-            child: Card(
-              elevation: 2,
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      _questions[index],
-                      style: const TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 8),
-                    RatingOptions(index: index),
-                  ],
+      body: Scrollbar(
+        // Add Scrollbar here
+        thickness: 10,
+        thumbVisibility: true, // Makes the scrollbar always visible
+        child: ListView.builder(
+          itemCount: _questions.length,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+              child: Card(
+                elevation: 2,
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _questions[index],
+                        style: const TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 8),
+                      RatingOptions(index: index),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _submitSurvey(context),
@@ -115,9 +120,10 @@ class RatingOptions extends StatelessWidget {
       builder: (context, surveyProvider, child) {
         return Column(
           children: List.generate(5, (i) {
+            int rating = 5 - i; // Generate ratings in decreasing order
             return RadioListTile<int>(
-              title: Text('${i + 1}'),
-              value: i + 1,
+              title: Text('$rating'),
+              value: rating,
               groupValue: surveyProvider.getAnswer(index),
               onChanged: (int? value) =>
                   value != null ? surveyProvider.setAnswer(index, value) : null,

@@ -10,11 +10,14 @@ class NoBudgetDataScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            'Please enter data for the budget tracker',
-            textAlign: TextAlign.center,
-            style:
-                GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 20),
+          Container(
+            margin: const EdgeInsets.all(10),
+            child: Text(
+              'Please enter data for the budget tracker',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.bold, fontSize: 20),
+            ),
           ),
           const SizedBox(
             height: 25,

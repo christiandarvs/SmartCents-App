@@ -92,6 +92,11 @@ class Module extends StatelessWidget {
             title: Text(
               title,
             ),
+            actions: [
+              IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.spatial_audio_off_outlined))
+            ],
           ),
           body: Center(
             child: ListView(
